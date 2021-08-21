@@ -1,18 +1,94 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-  </div>
+  <section class="section">
+    <img alt="logo" src="../assets/logo-mastercraft.svg" />
+    <MainPage msg="Mastercraft Bamboo Monitor Riser" />
+    <div class="tests">
+      <span>{{ count }} <button @click="incrementCount">+</button></span>
+
+      <div class="settings__group" v-for="label of labels" :key="label">
+        <label class="settings__label">{{ label }}</label>
+        <select class="settings__select" @change="addGroupToSelectedGroups">
+          <option style="display: none"></option>
+          <option
+            v-for="option in options"
+            :key="option"
+            class="settings__option"
+          >
+            {{ option }}
+          </option>
+        </select>
+        <span
+          class="selected__groups"
+          v-for="group in selectedGroups"
+          :key="group"
+        >
+          {{ group }}
+          <button @click="removeGroupFromSelectedGroups(group)">x</button>
+        </span>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import MainPage from '@/components/MainPage.vue';
+import keys from '@/constants/keys';
 
 export default {
-  name: "Home",
+  name: 'Home',
+  data() {
+    return {
+      count: 0,
+      options: ['one', 'two', 'three'],
+      // options: keys.options,
+      selectedGroups: keys.selectedGroups,
+      labels: keys.labels,
+    };
+  },
   components: {
-    HelloWorld,
+    MainPage,
+  },
+  methods: {
+    incrementCount() {
+      this.count++;
+    },
+    addGroupToSelectedGroups(e) {
+      console.log(e.target.value);
+      let value = e.target.value;
+      const selectedGroups = this.selectedGroups;
+      if (selectedGroups.indexOf(value) === -1) {
+        // check if elements exists in the array
+        selectedGroups.unshift(value); // add group to selected groups if there is no such group
+        this.options = this.options.filter((option) => option !== value); // remove selected group from select options
+      }
+    },
+    removeGroupFromSelectedGroups(group) {
+      this.selectedGroups = this.selectedGroups.filter(
+        (option) => option !== group
+      );
+      this.options.unshift(group);
+    },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.tests {
+  font-size: 2rem;
+  padding: 50px;
+}
+.settings {
+  &__group {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__select {
+    margin: 30px;
+    width: 300px;
+  }
+}
+</style>

@@ -7,18 +7,22 @@
       <select class="settings__select" @change="addGroupToSelectedGroups">
         <option style="display: none"></option>
         <option
-          v-for="option of select.options"
+          v-for="option of options"
           :key="option"
           class="settings__option"
         >
           {{ option }}
         </option>
       </select>
+      <span
+        class="selected__groups"
+        v-for="group of selectedGroups"
+        :key="group"
+      >
+        {{ group }}
+        <button @click="removeGroupFromSelectedGroups(group)">x</button>
+      </span>
     </div>
-    <span class="selected__groups" v-for="group of selectedGroups" :key="group">
-      {{ group }}
-      <button @click="removeGroupFromSelectedGroups(group)">x</button>
-    </span>
   </section>
 </template>
 
@@ -32,7 +36,7 @@ export default {
   data() {
     return {
       selects: keys.selects,
-      options: keys.selects[0].options,
+      options: keys.options,
       selectedGroups: keys.selectedGroups,
     };
   },

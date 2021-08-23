@@ -1,5 +1,5 @@
 export default {
-  options: [],
+  options: ['Comet', 'Asteroid', 'Amor', 'Apollo'],
   selectedGroups: [],
 
   labels: ['First label', 'Second label', 'Third label'],
